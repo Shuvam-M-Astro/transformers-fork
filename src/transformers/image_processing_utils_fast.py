@@ -581,10 +581,12 @@ class BaseImageProcessorFast(BaseImageProcessor):
         do_convert_rgb = kwargs.pop("do_convert_rgb")
         input_data_format = kwargs.pop("input_data_format")
         device = kwargs.pop("device")
+        dtype = kwargs.pop("dtype", torch.float32)
         # Prepare input images
         images = self._prepare_input_images(
             images=images, do_convert_rgb=do_convert_rgb, input_data_format=input_data_format, device=device
         )
+        images = [img.to(dtype=dtype) for img in images]
 
         # Update kwargs that need further processing before being validated
         kwargs = self._further_process_kwargs(**kwargs)
